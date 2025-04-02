@@ -4,7 +4,9 @@
   "description": "grocery api",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon src/index.ts",
+    "build": "tsc -b",
+    "start": "tsc -b && node dist/index.js"
   },
   "keywords": [
     "nodejs",
@@ -15,7 +17,14 @@
   "author": "Kewal Khondekar",
   "license": "ISC",
   "dependencies": {
+    "@types/express": "^5.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
     "prettier": "^3.5.3",
     "typescript": "^5.8.2"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17"
   }
 }
