@@ -10,6 +10,11 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+//routes
+import healthCheckRouter from "./router/healthCheck.router";
+
+app.use("/api/v1/", healthCheckRouter);
+
 app.post("/register", async (req, res) => {
 
   try {
