@@ -1,6 +1,6 @@
 import { asyncHandler } from "../utils/asyncHandler";
 import prisma from "../utils/db";
-import { createGroceryValidation } from "../validations/grocery.validation";
+import { createGroceryValidation, setInventoryValidation } from "../validations/grocery.validation";
 
 const getAllGroceryItem = asyncHandler( async (req, res) => {
 
@@ -66,9 +66,50 @@ const createGroceryItem = asyncHandler( async (req, res) => {
   });
 });
 
+const editInventory = asyncHandler( async (req, res) => {
+
+  const input = setInventoryValidation.safeParse(req.body);
+  if(!input.success){
+    return res.status(400).json({
+      message: "Invalid Input",
+      error: input.error.errors
+    });
+  };
+
+  const { groceryItemId, stock } = input.data;
+
+  const groceryItem = await prisma.grocery.findUnique({
+    where: { id: groceryItemId }
+  });
+
+  if(!groceryItem){
+    return res.status(404).json({
+      message: "Grocery Item not found"
+    });
+  };
+
+  const updatedInventory = await prisma.grocery.update({
+    where: { id: groceryItemId },
+    data: { stock: { increment: stock} }
+  });
+
+  if(!groceryItem){
+    return res.status(404).json({
+      message: "Failed to update Inventory"
+    })
+  }
+
+  return res.status(200).json({
+    message: "Inventory Updated",
+    updatedInventory
+  });
+
+});
+
 export {
   createGroceryItem,
   getAllGroceryItem,
-  getGroceryItemById
+  getGroceryItemById,
+  editInventory
 };
 
