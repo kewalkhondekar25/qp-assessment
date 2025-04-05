@@ -13,7 +13,13 @@ const setInventoryValidation = z.object({
   stock: z.number({ message: "Stock amount required"})
 });
 
+const orderGroceryValidation = z.object({
+  groceryItemId: z.number({ message: "Grocery Item Id required"}),
+  qty: z.number({ message: "Quantity required"})
+});
+
 export {
   createGroceryValidation,
-  setInventoryValidation
+  setInventoryValidation,
+  orderGroceryValidation
 };
