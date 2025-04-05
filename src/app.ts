@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import { authMiddleware } from "./middleware/auth.middleware";
 
 const app = express();
 
@@ -14,6 +13,6 @@ import groceryRouter from "./router/grocery.router"
 
 app.use("/api/v1/",  healthCheckRouter);
 app.use("/api/v1/user", userRouter);
-app.use("/api/v1/grocery", authMiddleware(["ADMIN"]), groceryRouter);
+app.use("/api/v1/grocery", groceryRouter);
 
 export { app };

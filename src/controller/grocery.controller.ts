@@ -2,12 +2,34 @@ import { asyncHandler } from "../utils/asyncHandler";
 import prisma from "../utils/db";
 import { createGroceryValidation } from "../validations/grocery.validation";
 
-const getAllGrocery = asyncHandler( async (req, res) => {
+const getAllGroceryItem = asyncHandler( async (req, res) => {
 
+  const groceryItems = await prisma.grocery.findMany()
+  
+  if(!groceryItems){
+    return res.status(404).json({
+      message: "No grocery items found"
+    });
+  };
+
+  return res.status(200).json({
+    message: "Grocery Items fetched successfully",
+    groceryItems
+  });
 });
 
-const getGroceryItem = asyncHandler( async (req, res) => {
+const getGroceryItemById = asyncHandler( async (req, res) => {
+  
+  const { id } = req.params;
 
+  const groceryItem = await prisma.grocery.findUnique({
+    where: { id: Number(id) }
+  });
+
+  return res.status(200).json({
+    message: "Grocery item fetched successfully",
+    groceryItem
+  });
 });
 
 const createGroceryItem = asyncHandler( async (req, res) => {
@@ -45,6 +67,8 @@ const createGroceryItem = asyncHandler( async (req, res) => {
 });
 
 export {
-  createGroceryItem
+  createGroceryItem,
+  getAllGroceryItem,
+  getGroceryItemById
 };
 
